@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: bd_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bd
+      POSTGRES_USER: bd_user
+      POSTGRES_PASSWORD: bd_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - bd_pgdata:/var/lib/postgresql/data
+
+volumes:
+  bd_pgdata:
