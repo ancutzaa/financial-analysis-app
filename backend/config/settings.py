@@ -34,9 +34,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # third-party
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
+
+    'core',
 ]
 
 # ================================
@@ -103,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTH_USER_MODEL = 'core.User'
 # ================================
 # INTERNATIONALIZATION
 # ================================
@@ -138,3 +140,6 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
