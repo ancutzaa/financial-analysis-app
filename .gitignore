@@ -24,7 +24,8 @@ staticfiles/
 .DS_Store
 Thumbs.db
 
-ml_assets/models/*.joblib
-ml_assets/datasets/
+backend/media/ml_models/*.joblib
+backend/data/uci_polish_data/
 backups/
+
 

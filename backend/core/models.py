@@ -244,7 +244,7 @@ class MLModelVersion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Versiune Model ML"
+        verbose_name = "ML model version"
 
 class ReportRequest(models.Model):
     STATUS_CHOICES = (
@@ -292,3 +292,4 @@ class BaseReport(models.Model):
 
     def __str__(self):
         return f"Raport Standard {self.snapshot.statement.company.name} - {self.snapshot.statement.reporting_date}"
+

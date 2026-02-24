@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Company, FinancialUpload, FinancialStatement, KPISnapshot
+from .models import User, Company, FinancialUpload, FinancialStatement, KPISnapshot, MLModelVersion
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -60,3 +60,9 @@ class KPISnapshotAdmin(admin.ModelAdmin):
             'fields': ('x9', 'x20', 'x21', 'x27', 'x64')
         }),
     )
+
+@admin.register(MLModelVersion)
+class MLModelVersionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'version', 'is_active', 'accuracy', 'f1_score', 'created_at')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'version')
