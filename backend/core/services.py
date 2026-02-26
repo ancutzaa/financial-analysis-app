@@ -3,6 +3,8 @@ import numpy as np
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.db import transaction
+
+from .ml_service import predict_risk
 from .models import FinancialUpload,FinancialStatement,KPISnapshot
 
 def validate_and_parse_financial_excel(file_path, is_onboarding=True):
@@ -44,6 +46,14 @@ def validate_and_parse_financial_excel(file_path, is_onboarding=True):
 
 def calculate_kpis(df):
     d = df.copy()
+
+    d['temp_month'] = pd.to_datetime(d['reporting_date']).dt.month
+
+    flux_columns = ['net_profit', 'ebit', 'sales_revenue', 'depreciation', 'operating_expenses']
+    for col in flux_columns:
+        d[col]=d[col]*(12/d['temp_month'])
+
+    d = d.drop(columns=['temp_month'])
 
     working_capital = d['current_assets'] - d['short_term_liabilities']
     fixed_assets = d['total_assets'] - d['current_assets']
@@ -154,8 +164,13 @@ def save_calculated_data(company, upload_instance, df_final):
 
             kpi_data = {f'x{i}': row.get(f'x{i}', 0) for i in range(1, 65)}
 
+            label, probability, importance = predict_risk(kpi_data)
+
             KPISnapshot.objects.create(
                 statement=statement,
+                prediction_label=label,
+                bankruptcy_probability=probability,
+                feature_importance_data = importance,
                 **kpi_data
             )
 
